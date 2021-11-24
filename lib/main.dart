@@ -19,10 +19,27 @@ class MyHomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Flutter app'),
+        title: const Text('Expense app'),
       ),
-      body: Center(
-        child: Text('Widget Playground'),
+      body: Column(
+        children: <Widget>[
+          Card(
+            color: Colors.blue,
+            margin: EdgeInsets.all(20),
+            child: Container(
+              child: Text(
+                'Chart !',
+                textAlign: TextAlign.center,
+              ),
+              width: double.infinity,
+              height: 50,
+            ),
+            elevation: 5,
+          ),
+          Card(
+            child: Text('LIST OF TX'),
+          ),
+        ],
       ),
     );
   }
