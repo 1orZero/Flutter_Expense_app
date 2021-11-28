@@ -1,56 +1,59 @@
+import 'package:expense_app_flutter/models/transaction.dart';
 import 'package:flutter/material.dart';
-import '../models/transaction.dart';
-import './new_transaction.dart';
-import './user_transactions.dart';
+import 'package:intl/intl.dart';
 
-class TransactionList extends StatefulWidget {
-  @override
-  _transactionListState createState() => _transactionListState();
-}
+class TransactionList extends StatelessWidget {
+  final List<Transaction> transactions;
 
-class _transactionListState extends State<TransactionList> {
-  final List<Transaction> _transactions = [
-    Transaction(
-      id: 't1',
-      title: 'New Shoes',
-      amount: 69.99,
-      date: DateTime.now(),
-    ),
-    Transaction(
-      id: 't2',
-      title: 'Weekly Groceries',
-      amount: 16.53,
-      date: DateTime.now().add(Duration(hours: 10)),
-    ),
-    Transaction(
-      id: 't3',
-      title: 'Weekly Groceries',
-      amount: 16.53,
-      date: DateTime.now().add(Duration(hours: -10)),
-    ),
-  ];
-
-  void _addNewTransactions(String title, double amount) {
-    final newTx = Transaction(
-        title: title,
-        amount: amount,
-        id: DateTime.now().toString(),
-        date: DateTime.now());
-
-    setState(() {
-      _transactions.add(newTx);
-    });
-  }
+  TransactionList(this.transactions);
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        NewTransaction(_addNewTransactions),
-        UserTransactions(
-          _transactions,
-        ),
-      ],
+    return Container(
+      height: 200,
+      child: ListView.builder(
+        itemBuilder: (ctx, index) {
+          return Card(
+              child: Row(
+            children: <Widget>[
+              Container(
+                  margin: EdgeInsets.symmetric(
+                    vertical: 10,
+                    horizontal: 15,
+                  ),
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Colors.purple,
+                      width: 2,
+                    ),
+                  ),
+                  padding: EdgeInsets.all(10),
+                  child: Text(
+                    '\$${transactions[index].amount.toStringAsFixed(2)}',
+                    style: TextStyle(
+                        color: Colors.purple,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20),
+                  )),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    transactions[index].title,
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
+                  Text(
+                    DateFormat('yyyy-mm-dd EEE HH:mm:ss')
+                        .format(transactions[index].date),
+                    style: TextStyle(fontSize: 12, color: Colors.grey),
+                  ),
+                ],
+              )
+            ],
+          ));
+        },
+        itemCount: transactions.length,
+      ),
     );
   }
 }
