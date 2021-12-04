@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import '../models/transaction.dart';
 import './chartBar.dart';
+import '../utils.dart';
 
 class Chart extends StatelessWidget {
   final List<Transaction> recentTransactions;
@@ -11,7 +12,7 @@ class Chart extends StatelessWidget {
   Chart(this.recentTransactions);
 
   List<Map<String, Object>> get groupedTransactionValues {
-    return List.generate(7, (index) {
+    var list = List.generate(7, (index) {
       final weekDay = DateTime.now().subtract(
         Duration(days: index),
       );
@@ -30,6 +31,7 @@ class Chart extends StatelessWidget {
         'amount': totalSum,
       };
     });
+    return utils.sortByWeekDay(list);
   }
 
   double get maxSpending {

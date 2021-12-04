@@ -29,6 +29,21 @@ class MyApp extends StatelessWidget {
               fontWeight: FontWeight.bold,
             ),
           ),
+          buttonTheme: ButtonThemeData(
+            buttonColor: Colors.yellow[700],
+            textTheme: ButtonTextTheme.normal,
+          ),
+          textButtonTheme: TextButtonThemeData(
+            style: ButtonStyle(
+              foregroundColor: MaterialStateProperty.all(Colors.yellow[700]),
+            ),
+          ),
+          elevatedButtonTheme: ElevatedButtonThemeData(
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all(Colors.yellow[700]),
+              foregroundColor: MaterialStateProperty.all(Colors.white),
+            ),
+          ),
           appBarTheme: AppBarTheme(
             backgroundColor: Colors.blueGrey[600],
             titleTextStyle: TextStyle(

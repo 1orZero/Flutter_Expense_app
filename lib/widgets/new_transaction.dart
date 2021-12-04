@@ -13,7 +13,7 @@ class _NewTransactionState extends State<NewTransaction> {
 
   final amountInput = TextEditingController();
 
-  void submitData() {
+  void _submitData() {
     final enteredTitle = titleInput.text;
     final enteredAmount = double.parse(amountInput.text);
 
@@ -26,6 +26,11 @@ class _NewTransactionState extends State<NewTransaction> {
 
     Navigator.of(context).pop();
     print('Navigator clicked');
+  }
+
+  void _presentDataPicker() {
+    showDateRangePicker(
+        context: context, firstDate: DateTime(2020), lastDate: DateTime.now());
   }
 
   @override
@@ -44,7 +49,7 @@ class _NewTransactionState extends State<NewTransaction> {
                 decoration: InputDecoration(
                   labelText: 'Title',
                 ),
-                onSubmitted: (_) => submitData(),
+                onSubmitted: (_) => _submitData(),
               ),
               TextField(
                 controller: amountInput,
@@ -52,10 +57,26 @@ class _NewTransactionState extends State<NewTransaction> {
                   labelText: 'Amount',
                 ),
                 keyboardType: TextInputType.numberWithOptions(decimal: true),
-                onSubmitted: (_) => submitData(),
+                onSubmitted: (_) => _submitData(),
               ),
-              TextButton(
-                onPressed: submitData,
+              Container(
+                height: 70,
+                child: Row(children: [
+                  Text('No Date chosen'),
+                  TextButton(
+                    child: Text(
+                      'Choose Date',
+                      style: TextStyle(
+                        // color: Theme.of(context).secondaryHeaderColor,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    onPressed: _presentDataPicker,
+                  ),
+                ]),
+              ),
+              ElevatedButton(
+                onPressed: _submitData,
                 child: Text(
                   'Add Transaction',
                   style: TextStyle(
