@@ -18,7 +18,21 @@ class MyApp extends StatelessWidget {
           cardColor: Colors.blueGrey[600],
           backgroundColor: Colors.blueGrey,
           dialogBackgroundColor: Colors.blueGrey,
-          colorScheme: ColorScheme.dark(),
+          colorScheme: ColorScheme.dark().copyWith(
+            primary: Colors.blueGrey[800],
+            onPrimary: Colors.yellow,
+            secondary: Colors.yellow[700],
+            onBackground: Colors.blueGrey[700],
+            background: Colors.blueGrey[700],
+            surface: Colors.blueGrey[600],
+            // primaryVariant: Colors.yellow[700],
+          ),
+          dialogTheme: DialogTheme(
+            backgroundColor: Colors.blueGrey[600],
+            titleTextStyle: TextStyle(
+              color: Colors.yellow[700],
+            ),
+          ),
           fontFamily: "OpenSans",
           textTheme: TextTheme(
             bodyText1: TextStyle(color: Colors.white),
@@ -64,12 +78,60 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final List<Transaction> _transactions = [
-    // Transaction(
-    //   id: 't1',
-    //   title: 'New Shoes',
-    //   amount: 69.99,
-    //   date: DateTime.now(),
-    // ),
+    Transaction(
+      id: 't1',
+      title: 'New Shoes',
+      amount: 69.99,
+      date: DateTime.now(),
+    ),
+    Transaction(
+      id: 't1',
+      title: 'New Shoes',
+      amount: 69.99,
+      date: DateTime.now(),
+    ),
+    Transaction(
+      id: 't1',
+      title: 'New Shoes',
+      amount: 69.99,
+      date: DateTime.now(),
+    ),
+    Transaction(
+      id: 't1',
+      title: 'New Shoes',
+      amount: 69.99,
+      date: DateTime.now(),
+    ),
+    Transaction(
+      id: 't1',
+      title: 'New Shoes',
+      amount: 69.99,
+      date: DateTime.now(),
+    ),
+    Transaction(
+      id: 't1',
+      title: 'New Shoes',
+      amount: 69.99,
+      date: DateTime.now(),
+    ),
+    Transaction(
+      id: 't1',
+      title: 'New Shoes',
+      amount: 69.99,
+      date: DateTime.now(),
+    ),
+    Transaction(
+      id: 't1',
+      title: 'New Shoes',
+      amount: 69.99,
+      date: DateTime.now(),
+    ),
+    Transaction(
+      id: 't1',
+      title: 'New Shoes',
+      amount: 69.99,
+      date: DateTime.now(),
+    ),
     // Transaction(
     //   id: 't3',
     //   title: 'Weekly Groceries',
@@ -88,15 +150,22 @@ class _MyHomePageState extends State<MyHomePage> {
     }).toList();
   }
 
-  void _addNewTransactions(String title, double amount) {
+  void _addNewTransactions(String title, double amount, DateTime chosenDate) {
     final newTx = Transaction(
-        title: title,
-        amount: amount,
-        id: DateTime.now().toString(),
-        date: DateTime.now());
+      title: title,
+      amount: amount,
+      date: chosenDate,
+      id: DateTime.now().toString(),
+    );
 
     setState(() {
       _transactions.add(newTx);
+    });
+  }
+
+  void _delTransaction(String id) {
+    setState(() {
+      _transactions.removeWhere((tx) => tx.id == id);
     });
   }
 
@@ -114,26 +183,40 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    var appBar = AppBar(
+      title: Text('Flutter Expense App'),
+      actions: [
+        IconButton(
+          onPressed: () {
+            _startAddNewTransaction(context);
+          },
+          icon: Icon(Icons.add_box_sharp),
+        )
+      ],
+    );
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Flutter Expense App'),
-        actions: [
-          IconButton(
-            onPressed: () {
-              _startAddNewTransaction(context);
-            },
-            icon: Icon(Icons.add_box_sharp),
-          )
-        ],
-      ),
+      appBar: appBar,
       body: SingleChildScrollView(
         child: Column(
           // mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            Chart(_recentTransactions),
-            TransactionList(
-              _transactions,
+            Container(
+              height: (MediaQuery.of(context).size.height -
+                      appBar.preferredSize.height -
+                      MediaQuery.of(context).padding.top) *
+                  0.3,
+              child: Chart(_recentTransactions),
+            ),
+            Container(
+              height: (MediaQuery.of(context).size.height -
+                      appBar.preferredSize.height -
+                      MediaQuery.of(context).padding.top) *
+                  0.7,
+              child: TransactionList(
+                _transactions,
+                _delTransaction,
+              ),
             ),
           ],
         ),

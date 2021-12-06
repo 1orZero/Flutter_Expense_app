@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class NewTransaction extends StatefulWidget {
   final Function addTx;
@@ -10,18 +11,18 @@ class NewTransaction extends StatefulWidget {
 
 class _NewTransactionState extends State<NewTransaction> {
   final titleInput = TextEditingController();
-
   final amountInput = TextEditingController();
+  DateTime _selectedDate = DateTime.now();
 
   void _submitData() {
-    final enteredTitle = titleInput.text;
-    final enteredAmount = double.parse(amountInput.text);
-
-    if (enteredTitle.isEmpty || enteredAmount <= 0) {
+    if (titleInput.text.isEmpty || amountInput.text.isEmpty) {
       return;
     }
+    final enteredTitle = titleInput.text;
+    final enteredAmount = double.parse(amountInput.text);
+    final enteredDate = _selectedDate;
 
-    widget.addTx(enteredTitle, enteredAmount);
+    widget.addTx(enteredTitle, enteredAmount, enteredDate);
     print('Button clicked');
 
     Navigator.of(context).pop();
@@ -29,8 +30,19 @@ class _NewTransactionState extends State<NewTransaction> {
   }
 
   void _presentDataPicker() {
-    showDateRangePicker(
-        context: context, firstDate: DateTime(2020), lastDate: DateTime.now());
+    showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2020),
+      lastDate: DateTime.now(),
+    ).then((pickedDate) => {
+          if (pickedDate != null)
+            {
+              setState(() {
+                _selectedDate = pickedDate;
+              })
+            }
+        });
   }
 
   @override
@@ -62,7 +74,8 @@ class _NewTransactionState extends State<NewTransaction> {
               Container(
                 height: 70,
                 child: Row(children: [
-                  Text('No Date chosen'),
+                  Text(
+                      'Date: ${DateFormat.yMMMMd('en_US').format(_selectedDate)}'),
                   TextButton(
                     child: Text(
                       'Choose Date',
