@@ -9,7 +9,6 @@ class ChartBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // print('spendingPctOfTotal : ${spendingPctOfTotal}');
     return LayoutBuilder(builder: (context, constraints) {
       return Column(
         children: <Widget>[
@@ -26,6 +25,7 @@ class ChartBar extends StatelessWidget {
             height: constraints.maxHeight * 0.6,
             width: 10,
             child: Stack(
+              alignment: Alignment.bottomCenter,
               children: <Widget>[
                 Container(
                   decoration: BoxDecoration(
@@ -38,7 +38,7 @@ class ChartBar extends StatelessWidget {
                   heightFactor: spendingPctOfTotal,
                   child: Container(
                     decoration: BoxDecoration(
-                      // color: Theme.of(context).scaffoldBackgroundColor,
+                      border: Border.all(color: Colors.grey, width: 1.0),
                       color: Theme.of(context).secondaryHeaderColor,
                       borderRadius: BorderRadius.circular(10),
                     ),

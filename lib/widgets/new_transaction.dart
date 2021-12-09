@@ -1,5 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import './adaptiveButton.dart';
 
 class NewTransaction extends StatefulWidget {
   final Function addTx;
@@ -47,60 +49,62 @@ class _NewTransactionState extends State<NewTransaction> {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 5,
-      child: Container(
-        padding: EdgeInsets.all(10),
-        child: Container(
-          padding: EdgeInsets.all(10),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: <Widget>[
-              TextField(
-                controller: titleInput,
-                decoration: InputDecoration(
-                  labelText: 'Title',
-                ),
-                onSubmitted: (_) => _submitData(),
-              ),
-              TextField(
-                controller: amountInput,
-                decoration: InputDecoration(
-                  labelText: 'Amount',
-                ),
-                keyboardType: TextInputType.numberWithOptions(decimal: true),
-                onSubmitted: (_) => _submitData(),
-              ),
-              Container(
-                height: 70,
-                child: Row(children: [
-                  Text(
-                      'Date: ${DateFormat.yMMMMd('en_US').format(_selectedDate)}'),
-                  TextButton(
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return SingleChildScrollView(
+          child: Card(
+            elevation: 5,
+            child: Container(
+              padding: EdgeInsets.all(10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: <Widget>[
+                  TextField(
+                    controller: titleInput,
+                    decoration: InputDecoration(
+                      labelText: 'Title',
+                    ),
+                    onSubmitted: (_) => _submitData(),
+                  ),
+                  TextField(
+                    controller: amountInput,
+                    decoration: InputDecoration(
+                      labelText: 'Amount',
+                    ),
+                    keyboardType:
+                        TextInputType.numberWithOptions(decimal: true),
+                    onSubmitted: (_) => _submitData(),
+                  ),
+                  Container(
+                    height: 100,
+                    child: Flex(
+                      direction: Axis.horizontal,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                            'Date: ${DateFormat.yMMMMd('en_US').format(_selectedDate)}'),
+                        AdaptiveButton('Choose Date', _presentDataPicker),
+                      ],
+                    ),
+                  ),
+                  ElevatedButton(
+                    onPressed: _submitData,
                     child: Text(
-                      'Choose Date',
+                      'Add Transaction',
                       style: TextStyle(
-                        // color: Theme.of(context).secondaryHeaderColor,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    onPressed: _presentDataPicker,
                   ),
-                ]),
+                  Padding(
+                      padding: EdgeInsets.only(
+                          bottom: MediaQuery.of(context).viewInsets.bottom)),
+                ],
               ),
-              ElevatedButton(
-                onPressed: _submitData,
-                child: Text(
-                  'Add Transaction',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            ],
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }
